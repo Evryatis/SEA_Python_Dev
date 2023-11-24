@@ -4,16 +4,33 @@ from functions import ReadAndWrite
 # Initialisation des variables pour la carte
 
 game_center = 3
-coding_level = 1
-energy_max = 1
-energy = 1
-Bitcoins = 0
-
 
 # Initialisation de la carte
 
 game_map = [[0 for j in range(21)] for i in range(21)]
 game_map[10][10] = game_center
+
+class Joueur:
+    def __init__(self, coding_level, energy_maximum, energy, bitcoin):
+        self.coding_level = coding_level
+        self.energy_maximum = energy_maximum
+        self.energy = energy
+        self.bitcoin = bitcoin
+
+    def amelioration_niveau(self, bitcoin, coding_level):
+        if bitcoin > 0:
+            self.coding_level += 1
+            bitcoin -= 10
+
+    def amelioration_energie(self, bitcoin, energy_maximum):
+        if bitcoin > 0:
+            self.energy_maximum += 1
+            bitcoin -= 10
+
+    def repos(self, energy, energy_maximum):
+        while energy <= energy_maximum:
+            energy += 0.1
+            time.sleep(0.1)
 
 
 def game_loop():
