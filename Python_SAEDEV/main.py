@@ -1,5 +1,5 @@
-import tkinter as tk
 import random as rd
+from functions import ReadAndWrite
 
 # Initialisation des variables pour la carte
 
@@ -16,7 +16,6 @@ game_map = [[0 for j in range(21)] for i in range(21)]
 game_map[10][10] = game_center
 
 
-# Moteur du Jeu
 def game_loop():
     pass
 
