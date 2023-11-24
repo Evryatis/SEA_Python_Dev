@@ -15,5 +15,5 @@ def populate_map():
 
     game_map.close()
 
-def read_file():
-    game_map = open("")
+def read_map():
+    game_map = open("../game-map.txt", "r")
