@@ -15,6 +15,10 @@ class Mission:
     def __del__(self): # Called upon using "del mission"
         Mission.mission_amount.pop(self.id)
 
+        # Change every mission ID each time a mission is destructed so IDs still work as indices
+        for i in range(len(Mission.mission_list)):
+            Mission.mission_list.id = i
+
     @classmethod
     def get_mission_list(cls):
         return Mission.mission_list
