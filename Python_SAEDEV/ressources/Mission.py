@@ -1,5 +1,6 @@
 import random as rd
 
+
 class Mission:
     mission_coordinates = set()
 
@@ -12,7 +13,7 @@ class Mission:
         # Add mission coordinates to the mission_coordinates set for easier access later on
         Mission.mission_coordinates.add(self.coordinates)
 
-    def __del__(self): # Called upon using "del mission"
+    def __del__(self):  # Called upon using "del mission"
         Mission.mission_coordinates.remove(self.coordinates)
 
     @classmethod
