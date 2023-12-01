@@ -16,21 +16,8 @@ game_map[10][10] = game_center
 
 player1 = Player()
 
-print(Mission.get_all_mission_coordinates())
-mission1 = Mission()
-print(Mission.get_all_mission_coordinates())
-del mission1
-print(Mission.get_all_mission_coordinates())
+mission1 = Player()
 
-
-class Student:
-    # Initializing
-    def __init__(self):
-        print('Student table created.')
-
-    # Deleting (Calling destructor)
-    def __del__(self):
-        print('Destructor called, Student table deleted.')
 
 # Game loop
 
