@@ -1,11 +1,9 @@
 class Player:
-    max_energy = 10
-
     def __init__(self):
         self.coordinates = (10, 10)
         self.coding_level = 1
-        self.energy_maximum = 1
         self.energy = 1
+        self.max_energy = 1
         self.bitcoins = 0
 
     def move_player(self, x_movement, y_movement):
@@ -18,8 +16,8 @@ class Player:
             self.bitcoins -= 10
 
     def upgrade_energy(self):
-        if self.bitcoins >= 10:
-            self.energy_maximum += 1
+        if self.bitcoins >= 10 and self.max_energy < 10:
+            self.max_energy += 1
             self.bitcoins -= 10
 
     def add_bitcoins(self, amount):
