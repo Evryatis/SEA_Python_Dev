@@ -1,5 +1,5 @@
 import tkinter as tk
-from ..classes.Player import Player
+from classes.Player import Player
 
 def create_grid(canvas, row_count, col_count, cell_size):
     for row in range(row_count + 1):
@@ -9,6 +9,7 @@ def create_grid(canvas, row_count, col_count, cell_size):
     for col in range(col_count + 1):
         x = col * cell_size
         canvas.create_line(x, 0, x, row_count * cell_size, fill="gray")
+
 
 # GUI Initialization
 main_gui = tk.Tk()
@@ -28,10 +29,10 @@ grid_canvas.grid(row=1, column=0, padx=20, pady=20)  # Adjust padx and pady as n
 
 # Widget for player-information
 player_info = tk.Frame(master = main_gui)
-Player_1 = tk.Label(master = player_info)
-Player_2 = tk.Label(master = player_info)
-Player_3 = tk.Label(master = player_info)
-Player_4 = tk.Label(master = player_info)
+player1 = tk.Label(master = player_info)
+player2 = tk.Label(master = player_info)
+player3 = tk.Label(master = player_info)
+player4 = tk.Label(master = player_info)
 
 
 # Draw the grid
