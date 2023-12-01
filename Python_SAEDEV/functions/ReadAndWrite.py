@@ -25,7 +25,7 @@ def read_map_file(location):
     in the map matrix (game_map) in main.py.
 
     :param location:
-    :return:
+    :return map_coordinates:
     """
     game_map = open(f"{location}/game-map.txt", "r")
 
