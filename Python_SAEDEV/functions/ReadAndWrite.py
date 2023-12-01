@@ -28,6 +28,16 @@ def read_map_file(location):
     :return:
     """
     game_map = open(f"{location}/game-map.txt", "r")
-    map_coordinates = game_map.readlines()
-    print(map_coordinates)
+
+    # Split each line of the game-map.txt file so that each element is contained in a sublist of map_coordinates
+    # map_coordinates is a list which contains lists that represent each line of the game-map.txt
+    # Each sublist should follow the format "[x, y, element_id]"
+    map_coordinates = [line.split() for line in game_map.readlines()]
+
     game_map.close()
+
+    for line in map_coordinates:
+        for i in range(len(line)):
+            line[i] = int(line[i]) # Convert each element of all lines into ints
+
+    return map_coordinates
