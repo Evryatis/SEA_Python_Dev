@@ -1,5 +1,6 @@
 class Player:
     def __init__(self):
+        self.coordinates = (10, 10)
         self.coding_level = 1
         self.energy_maximum = 1
         self.energy = 1
