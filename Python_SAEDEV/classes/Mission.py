@@ -9,16 +9,18 @@ class Mission:
         Mission.mission_coordinates.add(self.coordinates)
         self.difficulty = rd.randint(1, 9)
         self.workload = self.difficulty
-        self.id = -1 # Initiate Mission ID which represents its index in the mission_list class variable
 
         # Add mission to the mission_list for easier access later on
-        Mission.mission_list.append(self)
+        Mission.add_mission_to_class_var(self)
+
+        # Initiate Mission ID which represents its index in the mission_list class variable
+        self.id = len(Mission.mission_list) - 1
 
         self.update_mission_list()
+
     def __del__(self): # Called upon using "del mission"
         # print(self.mission_list, self.mission_coordinates)
-        self.mission_list.pop(self.id)
-        self.mission_coordinates.remove(self.coordinates)
+        Mission.remove_mission_from_class_var(self)
         # print(self.mission_list, self.mission_coordinates)
 
         self.update_mission_list()
@@ -36,3 +38,13 @@ class Mission:
         # Change every mission ID each time a new mission is created so IDs still work as indices
         for i in range(len(cls.mission_list)):
             cls.mission_list[i].id = i
+
+    @classmethod
+    def add_mission_to_class_var(cls, object):
+        cls.mission_list.append(object)
+        cls.mission_coordinates.add(object.coordinates)
+
+    @classmethod
+    def remove_mission_from_class_var(cls, object):
+        cls.mission_list.pop(object.id)
+        cls.mission_coordinates.remove(object.coordinates)
