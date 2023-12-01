@@ -1,5 +1,5 @@
 import tkinter as tk
-from classes.Player import Player
+from ressources.Player import Player
 
 def create_grid(canvas, row_count, col_count, cell_size):
     for row in range(row_count + 1):
