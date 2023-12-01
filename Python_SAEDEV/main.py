@@ -1,6 +1,6 @@
-from functions import ReadAndWrite as rw
-from classes.Player import Player
-from classes.Mission import Mission
+from Python_SAEDEV.ressources import ReadAndWrite as rw
+from ressources.Player import Player
+from ressources.Mission import Mission
 
 # Creating game map
 
@@ -15,9 +15,16 @@ map_coordinates = rw.read_map_file("./data")
 
 # Game initialisation
 
-player1 = Player()
+players = [Player(), Player()]
+players[1].coordinates = (12, 5)
+print(players[1].coordinates)
 
-mission1 = Player()
+mission1 = Mission()
+
+rw.save_player_states("./data", players)
+
+players = rw.load_player_states("./data")
+print(players[1].coordinates)
 
 
 # Game loop
