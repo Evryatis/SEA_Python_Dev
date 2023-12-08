@@ -5,7 +5,7 @@ from .Mission import Mission
 # from .Player import Player
 
 
-def write_map_file(game_table, location):
+def write_map_file(mission_list, location):
     """
     Writes the "map" file at the specified location (file path) with
     every Mission and their difficulty under the following format:
@@ -18,42 +18,31 @@ def write_map_file(game_table, location):
     """
     game_map = open(location, "w")
 
-    for y in range(len(game_table)):
-        for x in range(len(game_table[y])):
-            cell = game_table[x][y]
-            if isinstance(cell, Mission):
-                game_map.write(f"{cell.coordinates[0]} {cell.coordinates[1]} {cell.difficulty}\n")
+    for mission in mission_list:
+        game_map.write(f"{mission.coordinates[0]} {mission.coordinates[1]} {mission.difficulty}\n")
 
     game_map.close()
 
 
 def read_map_file(location):
     """
-    Reads the "game-map.txt" file and assign each line to its coordinates
-    in the map matrix (game_map) in main.py.
-
+    Reads the "map" file and returns a list of Mission objects
     :param location:
     :return map_coordinates:
     """
-    # map_coordinates is the map matrix for which each element represents one cell of the map
-    map_coordinates = [[0 for j in range(21)] for i in range(21)]
-    map_coordinates[10][10] = 1  # The game-center has a value of 1
+    mission_list = []
 
-    game_map = open(f"{location}/game-map.txt", "r")
+    mission_file = open(location, "r")
 
     # This loop imports every Mission and inserts it into map_coordinates to the right coordinates
-    for line in game_map.readlines():
-        line.split()
+    for line in mission_file.readlines():
+        line = [int(x) for x in line.split()]
         mission_coordinates = (line[0], line[1])
-        map_coordinates[line[0]][line[1]] = Mission(mission_coordinates, line[2])
+        mission_list.append(Mission(mission_coordinates, line[2]))
 
-    game_map.close()
+    mission_file.close()
 
-    for line in map_coordinates:
-        for i in range(len(line)):
-            line[i] = int(line[i])  # Convert each element of all lines into ints
-
-    return map_coordinates
+    return mission_list
 
 # USELESS AND OBSOLETE
 # def save_player_states(location, player_list):
