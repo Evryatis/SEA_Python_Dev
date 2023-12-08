@@ -4,10 +4,10 @@ import random as rd
 class Mission:
     mission_coordinates = set()
 
-    def __init__(self):
-        self.coordinates = (rd.randint(0, 20), rd.randint(0, 20))
+    def __init__(self, coordinates, difficulty):
+        self.coordinates = coordinates
         Mission.mission_coordinates.add(self.coordinates)
-        self.difficulty = rd.randint(1, 9)
+        self.difficulty = difficulty
         self.workload = self.difficulty
 
         # Add mission coordinates to the mission_coordinates set for easier access later on
