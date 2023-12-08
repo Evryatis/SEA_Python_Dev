@@ -1,85 +1,98 @@
-from .Mission import Mission
+import tkinter as tk
+import os
 
+# Constants for cell types
+REGULAR_SPACE = 0
+TASK_LOCATION = 1
+GAME_CENTER = 2
 
-# UNUSED
-# from .Player import Player
-
-
-def write_map_file(mission_list, location):
+def load_map_from_file(file_path, default_value=-1):
     """
-    Writes the "map" file at the specified location (file path) with
-    every Mission and their difficulty under the following format:
+      Charge les données du texte, chaque élément du texte represente un élément dans la carte
+      """
+    with open(file_path, 'r') as file: # With s'assure que le fichier se ferme même en cas d'erreur
 
-    "X Y DIFFICULTY"
+        map_data = [list(map(int, line.strip().split())) for line in file]
 
-    :param game_table:
-    :param location:
-    :return:
+    # Find the maximum number of columns in any row
+    max_columns = max(len(row) for row in map_data)
+
+    # Pad each row with the default value to make them equal in length
+    map_data = [row + [default_value] * (max_columns - len(row)) for row in map_data]
+
+    return map_data
+
+
+def create_grid(canvas, cell_types, cell_size):
     """
-    game_map = open(location, "w")
-
-    for mission in mission_list:
-        game_map.write(f"{mission.coordinates[0]} {mission.coordinates[1]} {mission.difficulty}\n")
-
-    game_map.close()
-
-
-def read_map_file(location):
+    Draw the grid on the canvas based on cell types.
     """
-    Reads the "map" file and returns a list of Mission objects
-    :param location:
-    :return map_coordinates:
-    """
-    mission_list = []
+    row_count = len(cell_types)
+    col_count = len(cell_types[0])
 
-    mission_file = open(location, "r")
+    for row in range(row_count):
+        for col in range(col_count):
+            cell_type = cell_types[row][col]
 
-    # This loop imports every Mission and inserts it into map_coordinates to the right coordinates
-    for line in mission_file.readlines():
-        line = [int(x) for x in line.split()]
-        mission_coordinates = (line[0], line[1])
-        mission_list.append(Mission(mission_coordinates, line[2]))
+            x = col * cell_size
+            y = row * cell_size
 
-    mission_file.close()
+            # Set properties based on cell type
+            fill_color = "white"
+            if cell_type == TASK_LOCATION:
+                fill_color = "lightblue"
+            elif cell_type == GAME_CENTER:
+                fill_color = "lightgreen"
 
-    return mission_list
-
-# USELESS AND OBSOLETE
-# def save_player_states(location, player_list):
-#     """
-#     Writes the saves.txt file with the locations and stats of each player in the player list
-#     that is passed as an argument under the following format:
-#
-#     "x y coding_level energy max_energy bitcoins"
-#     :param location:
-#     :param player_list:
-#     :return:
-#     """
-#     saves = open(f"{location}/saves.txt", "w")
-#     for player in player_list:
-#         saves.write(f"{player.coordinates[0]} {player.coordinates[1]} {player.coding_level} " +
-#                     f"{player.energy} {player.max_energy} {player.bitcoins}\n")
-#     saves.close()
+            # Draw the cell
+            canvas.create_rectangle(x, y, x + cell_size, y + cell_size, fill=fill_color, outline="gray")
 
 
-# USELESS AND OBSOLETE
-# def load_player_states(location):
-#     save_file = open(f"{location}/saves.txt", "r")
-#
-#     saves = [line.split() for line in save_file.readlines()]
-#
-#     save_file.close()
-#
-#     for line in saves:
-#         for i in range(len(line)):
-#             line[i] = int(line[i])  # Convert each element of all lines into ints
-#
-#     players = [Player()] * len(saves)
-#     for i in range(len(saves)):
-#         players[i].coordinates = (saves[i][0], saves[i][1])
-#         players[i].coding_level = saves[i][2]
-#         players[i].energy = saves[i][3]
-#         players[i].max_energy = saves[i][4]
-#         players[i].bitcoins = saves[i][5]
-#
-#     return players
+def main():
+    # GUI Initialization
+    main_gui = tk.Tk()
+    main_gui.title("CSN_WAR")
+    main_gui.geometry('800x480')
+    main_gui.iconbitmap('logo.PNG')
+
+    # Title
+    title_label = tk.Label(main_gui, text='CSN_WAR', font='Calibri 24 bold')
+    title_label.grid(row=0, column=0, columnspan=2, pady=5)
+
+    # Grid Initialization for the widgets inside the window
+    main_gui.columnconfigure(0, weight=1)
+
+    # Create a Canvas for the grid
+    grid_canvas = tk.Canvas(main_gui, width=20 * 20, height=20 * 20, bg="white")
+    grid_canvas.grid(row=1, column=0, padx=20, pady=20)
+
+    # Get the absolute path to the map file
+    map_file_path = os.path.join(os.getcwd(), 'data', 'game-map.txt')
+
+    # Load map data from a file
+    map_data = load_map_from_file(map_file_path)
+
+    # Draw the grid with cell types
+    create_grid(grid_canvas, map_data, 20)
+
+    # Placeholder for game-related functions (replace with actual functions)
+    # For example, you can call functions to handle player movements, tasks, etc.
+
+    # Game main loop
+    main_gui.mainloop()
+
+map_file_path = os.path.join(os.getcwd(), 'data', 'game-map.txt')
+map_data = load_map_from_file(map_file_path)
+if True:
+    for i in map_data:
+        print(i)
+        for e in i:
+            if e == 2:
+                print("Game Center!")
+            if e == 1:
+                print("Mission!")
+
+if __name__ == "__main__":
+    main()
+
+
