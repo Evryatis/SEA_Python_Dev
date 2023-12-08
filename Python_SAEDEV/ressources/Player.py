@@ -6,7 +6,7 @@ class Player:
         self.max_energy = 1
         self.bitcoins = 0
 
-    def move_player(self, x_movement, y_movement):
+    def move(self, x_movement, y_movement):
         self.coordinates = (self.coordinates[0] + x_movement,
                             self.coordinates[1] + y_movement)
 
@@ -22,6 +22,9 @@ class Player:
 
     def add_bitcoins(self, amount):
         self.bitcoins += amount
+
+    def get_bitcoins(self):
+        return self.bitcoins
 
     def rest(self):
         while self.energy <= self.max_energy:
