@@ -22,7 +22,7 @@ def write_map_file(game_table, location):
         for x in range(len(game_table[y])):
             cell = game_table[x][y]
             if isinstance(cell, Mission):
-                game_map.write(f"{cell.coordinates[0]} {cell.coordinates[y]} {cell.difficulty}\n")
+                game_map.write(f"{cell.coordinates[0]} {cell.coordinates[1]} {cell.difficulty}\n")
 
     game_map.close()
 
