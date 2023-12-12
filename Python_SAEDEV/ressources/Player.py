@@ -1,14 +1,24 @@
 class Player:
-    def __init__(self):
+    player_coordinates = []
+
+    def __init__(self, index):
+        self.index = index
         self.coordinates = (10, 10)
+        Player.player_coordinates.append(self.coordinates)
         self.coding_level = 1
         self.energy = 1
         self.max_energy = 1
         self.bitcoins = 0
 
     def move(self, x_movement, y_movement):
-        self.coordinates = (self.coordinates[0] + x_movement,
-                            self.coordinates[1] + y_movement)
+        destination = (self.coordinates[0] + x_movement,
+                       self.coordinates[1] + y_movement)
+        if destination not in Player.player_coordinates or destination == (10, 10) \
+                and 0 <= destination[0] <= 20 and 0 <= destination[1] <= 20:
+            Player.player_coordinates[self.index] = destination
+            self.coordinates = destination
+            return True
+        return False
 
     def upgrade_coding(self):
         if self.bitcoins >= 10:
