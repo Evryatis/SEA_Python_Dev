@@ -15,6 +15,24 @@ for i in range(21):
     for j in range(21):
         GAME_MAP[i].append(0)
 
+# def load_map_from_file(file_path, default_value=0):
+#     """
+#     Load map data from a text file and return a 2D list.
+#     Each element represents the type of cell at that position.
+#     """
+#     with open(file_path, 'r') as file:
+#         map_data = [list(map(int, line.strip().split())) for line in file]
+#
+#     # Find the maximum number of columns in any row
+#     max_columns = max(len(row) for row in map_data)
+#
+#     # Pad each row with the default value to make them equal in length
+#     map_data = [row + [default_value] * (max_columns - len(row)) for row in map_data]
+#
+#     return map_data
+
+
+
 
 def create_grid(canvas, cell_types, cell_size):
     """
