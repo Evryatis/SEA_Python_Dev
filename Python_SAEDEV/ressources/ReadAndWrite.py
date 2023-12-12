@@ -10,7 +10,7 @@ def write_map_file(mission_list, location):
     Writes the "map" file at the specified location (file path) with
     every Mission and their difficulty under the following format:
 
-    "X Y DIFFICULTY"
+    "X Y DIFFICULTY WORKLOAD"
 
     :param game_table:
     :param location:
@@ -19,7 +19,8 @@ def write_map_file(mission_list, location):
     game_map = open(location, "w")
 
     for mission in mission_list:
-        game_map.write(f"{mission.coordinates[0]} {mission.coordinates[1]} {mission.difficulty}\n")
+        game_map.write(
+            f"{mission.coordinates[0]} {mission.coordinates[1]} {mission.difficulty} {mission.starting_workload}\n")
 
     game_map.close()
 
@@ -38,7 +39,7 @@ def read_map_file(location):
     for line in mission_file.readlines():
         line = [int(x) for x in line.split()]
         mission_coordinates = (line[0], line[1])
-        mission_list.append(Mission(mission_coordinates, line[2]))
+        mission_list.append(Mission(mission_coordinates, line[2], line[3]))
 
     mission_file.close()
 
