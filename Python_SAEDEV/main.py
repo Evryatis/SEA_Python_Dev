@@ -4,9 +4,12 @@ from ressources.Mission import Mission
 
 # List of available command-line commands
 
-commands = {"help", "move", "rest", "load", "yes", "no", "exit", "upgrade", "energy", "coding", "skip", "bank"}
+commands = {"help", "move", "rest", "load", "yes", "no", "exit",
+            "upgrade", "skip", "bank", "missions"}
 
-directions = {"up": (0, -1), "down": (0, 1), "left": (1, 0), "right": (-1, 0)}
+upgrades = {"energy", "coding"}
+
+directions = {"up": (0, 1), "down": (0, -1), "left": (1, 0), "right": (-1, 0)}
 
 
 # Help command
@@ -17,6 +20,7 @@ def help():
     ===============================
     help: Get this list of commands (does not skip your turn)
     move <DIRECTION>: Move the player in the specified direction
+    missions: Show the location of all missions along with their difficulty and remaining workload
     upgrade coding: Upgrade your coding level (costs 10 bitcoins)
     upgrade energy: Upgrade your maximum energy level (costs 10 bitcoins)
     bank: Get the amount of bitcoins you have (does not skip your turn)
@@ -35,49 +39,78 @@ def help():
 # Creating game map
 
 game_map = [["0" for j in range(21)] for i in range(21)]
-mission_list = [Mission((15, 8), 5),
-                Mission((14, 7), 8),
-                Mission((4, 9), 1)]
+game_map[10][10] = -1
+missions = [Mission((15, 8), 1, 2),
+            Mission((14, 7), 2, 4),
+            Mission((4, 9), 1, 3)]
 
-rw.write_map_file(mission_list, "./data/map1.txt")
+
+rw.write_map_file(missions, "./data/map1.txt")
 
 mission_list2 = rw.read_map_file("./data/map1.txt")
 
-rw.write_map_file(mission_list, "./data/map2.txt")
+rw.write_map_file(missions, "./data/map2.txt")
 
 
 # Game initialisation
 
-players = [Player(), Player()]
-
 
 # Game loop
 
-def game_loop(map):
-    print("Input \"help\" for a list of available commands.\n")
+def game_loop(map, missions, player_amount):
+    # Creates as many players as needed with each one having their own index
+    players = [Player(x) for x in range(player_amount)]
 
-    game_ended = False
-    while not game_ended:
+    print("Input \"help\" for a list of available commands.\n")
+    game_is_running = True
+    while game_is_running:
         for player_index in range(len(players)):
             if players[player_index].get_bitcoins() >= 5000:  # Check if any player won the game
-                game_ended = True
+                game_is_running = False
+                return True  # If True, this will create a new game
 
-            action = input(f"Player {player_index + 1}, what do you want to do? (\"help\" for commands)\n").split()
+            # Verify that the "action" input doesn't skip your turn
+            turn_ended = False
+            while not turn_ended:
+                print(f"Player {player_index + 1}, you are in position ({players[player_index].coordinates[0]}",
+                      f"{players[player_index].coordinates[1]}).")
+                action = input(
+                    f"Player {player_index + 1}, what do you want to do? (\"help\" for commands)\n").lower().split()
 
-            # Verify that the selected action is part of the available commands
-            # AND is not a command that skips your turn
-            while not (action[0] in commands and action[0] in {"help", "save", "load", "bank", "exit"}):
+                if action[0] == "skip":
+                    turn_ended = True
+
                 if action[0] == "help":
                     help()
 
                 if action[0] == "exit":
-                    action = input("Are you sure you want to leave?\n")
-                    if action == "yes":
-                        game_ended = True
+                    confirmation = input("Are you sure you want to leave?\n")
+                    if confirmation.split()[0] == "yes":
+                        game_is_running = False
                         break
 
                 if action[0] == "move":
-                    players[player_index].move(directions[action[1][0]],
-                                               directions[action[1][1]])
+                    if len(action) >= 2:
+                        if players[player_index].move(directions[action[1]][0],
+                                                      directions[action[1]][1]):
+                            turn_ended = True
+                        else:
+                            continue
+                    else:
+                        continue
 
-# game_loop()
+                if action[0] == "upgrade":
+                    if action[1] == "energy":
+                        players[player_index].upgrade_energy()
+                    elif action[1] == "coding":
+                        players[player_index].upgrade_coding()
+                    else:
+                        continue
+
+            # Check if exit was confirmed, and if so, quit the game
+            if action[0] == "exit" and confirmation == "yes":
+                game_is_running = False
+                break
+
+
+game_loop(game_map, missions, 1)
