@@ -1,17 +1,38 @@
-    """
-    Load map data from a text file and return a 2D list.
-    Each element represents the type of cell at that position.
-    """
-    with open(file_path, 'r') as file:
-        map_data = [list(map(int, line.strip().split())) for line in file]
+import tkinter as tk
+import os
+#from ressources import ReadAndWrite as rw
+import main.py as main
 
-    # Find the maximum number of columns in any row
-    max_columns = max(len(row) for row in map_data)
 
-    # Pad each row with the default value to make them equal in length
-    map_data = [row + [default_value] * (max_columns - len(row)) for row in map_data]
+TASK_LOCATION = 1
+GAME_CENTER = 2
 
-    return map_data
+mission_list = rw.read_map_file("./data/map1.txt")
+
+GAME_MAP = []
+for i in range(21):
+    GAME_MAP.append([])
+    for j in range(21):
+        GAME_MAP[i].append(0)
+
+# def load_map_from_file(file_path, default_value=0):
+#     """
+#     Load map data from a text file and return a 2D list.
+#     Each element represents the type of cell at that position.
+#     """
+#     with open(file_path, 'r') as file:
+#         map_data = [list(map(int, line.strip().split())) for line in file]
+#
+#     # Find the maximum number of columns in any row
+#     max_columns = max(len(row) for row in map_data)
+#
+#     # Pad each row with the default value to make them equal in length
+#     map_data = [row + [default_value] * (max_columns - len(row)) for row in map_data]
+#
+#     return map_data
+
+
+
 
 def create_grid(canvas, cell_types, cell_size):
     """
@@ -42,7 +63,6 @@ def main():
     main_gui = tk.Tk()
     main_gui.title("CSN_WAR")
     main_gui.geometry('800x480')
-    main_gui.iconbitmap('logo.PNG')
 
     # Title
     title_label = tk.Label(main_gui, text='CSN_WAR', font='Calibri 24 bold')
@@ -59,7 +79,7 @@ def main():
     map_file_path = os.path.join(os.getcwd(), 'data', 'game-map.txt')
 
     # Load map data from a file
-    map_data = load_map_from_file(map_file_path)
+    map_data = GAME_MAP
 
     # Draw the grid with cell types
     create_grid(grid_canvas, map_data, 20)
@@ -72,3 +92,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
