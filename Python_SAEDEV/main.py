@@ -33,7 +33,7 @@ def help():
     no: Cancel saving/loading/exiting the game
     
     Available directions: "up", "down", "left" and "right"
-    \n\n""")
+    \n""")
 
 
 # Creating game map
