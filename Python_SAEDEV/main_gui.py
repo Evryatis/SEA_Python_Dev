@@ -1,13 +1,8 @@
 import tkinter as tk
 import os
-#from ressources import ReadAndWrite as rw
-import main.py as main
+from ressources import ReadAndWrite as rw
 
 
-TASK_LOCATION = 1
-GAME_CENTER = 2
-
-mission_list = rw.read_map_file("./data/map1.txt")
 
 GAME_MAP = []
 for i in range(21):
@@ -33,12 +28,19 @@ for i in range(21):
 
 
 
+TASK_LOCATION = 1
+GAME_CENTER = 2
+
+mission_list = rw.read_map_file("./data/map1.txt")
+game_map1 = [["white" for x in range(21)] for y in range(21)]
+for mission in mission_list:
+    game_map1[mission.coordinates[0]][mission.coordinates[1]] = "lightblue"
 
 def create_grid(canvas, cell_types, cell_size):
     """
     Draw the grid on the canvas based on cell types.
     """
-    row_count = len(cell_types)
+    """row_count = len(cell_types)
     col_count = len(cell_types[0])
 
     for row in range(row_count):
@@ -48,15 +50,47 @@ def create_grid(canvas, cell_types, cell_size):
             x = col * cell_size
             y = row * cell_size
 
+            if row in mission_list[row] and col in mission_list[row]:
+                if 1 in mission_list[row]:
+                    fill_color = "lightblue"
+                if 2 in mission_list[row]:
+                    fill_color = "lightgreen"
             # Set properties based on cell type
             fill_color = "white"
-            if cell_type == TASK_LOCATION:
-                fill_color = "lightblue"
-            elif cell_type == GAME_CENTER:
-                fill_color = "lightgreen"
+            if 0 <= row < len(mission_list) and 0 <= col < len(mission_list[row]):
+                if 1 in mission_list[row]:
+                    fill_color = "lightblue"
+                if 2 in mission_list[row]:
+                    fill_color = "lightgreen"
 
-            # Draw the cell
-            canvas.create_rectangle(x, y, x + cell_size, y + cell_size, fill=fill_color, outline="gray")
+            canvas.create_rectangle(x, y, x + cell_size, y + cell_size, fill=fill_color, outline="gray")"""
+    # for mission in mission_list:
+    #     x, y, color_code, _ = mission
+    # 
+    #     # Calculate the actual row and column indices based on x and y coordinates
+    #     row = y
+    #     col = x
+    # 
+    #     # Set fill_color based on color_code
+    #     if color_code == 1:
+    #         fill_color = "lightblue"
+    #     elif color_code == 2:
+    #         fill_color = "lightgreen"
+    #     else:
+    #         fill_color = "white"
+    # 
+    #     # Draw the cell
+    #     canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size, fill=fill_color, outline="gray")
+    
+    for y in range(len(cell_types)):
+        for x in range(len(cell_types)):
+            fill_color = cell_types[x][y]
+
+            canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size,
+                                    fill=fill_color, outline="gray")
+
+def mission_addon():
+    pass
 
 def main():
     # GUI Initialization
@@ -76,7 +110,7 @@ def main():
     grid_canvas.grid(row=1, column=0, padx=20, pady=20)
 
     # Get the absolute path to the map file
-    map_file_path = os.path.join(os.getcwd(), 'data', 'game-map.txt')
+    map_file_path = os.path.join(os.getcwd(), 'data', 'map1.txt')
 
     # Load map data from a file
     map_data = GAME_MAP
@@ -92,4 +126,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+
     
