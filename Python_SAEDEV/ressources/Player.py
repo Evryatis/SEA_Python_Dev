@@ -13,7 +13,7 @@ class Player:
     def move(self, x_movement, y_movement):
         destination = (self.coordinates[0] + x_movement,
                        self.coordinates[1] + y_movement)
-        if destination not in Player.player_coordinates or destination == (10, 10) \
+        if (destination not in Player.player_coordinates or destination == (10, 10)) \
                 and 0 <= destination[0] <= 20 and 0 <= destination[1] <= 20:
             Player.player_coordinates[self.index] = destination
             self.coordinates = destination
@@ -36,6 +36,22 @@ class Player:
     def get_bitcoins(self):
         return self.bitcoins
 
+    def get_stats(self):
+        stats = f"""
+                Your coding level is at {self.coding_level},
+                you currently have {self.energy} E,
+                and your max energy level is at {self.max_energy}.
+                """
+        return stats
+
+    def lower_energy(self, amount):
+        if amount <= self.energy:
+            self.energy -= amount
+            return True
+        return False
+
     def rest(self):
-        while self.energy <= self.max_energy:
+        if self.energy <= self.max_energy:
             self.energy += 1
+            return True
+        return False
