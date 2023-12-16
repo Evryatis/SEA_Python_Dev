@@ -110,7 +110,7 @@ def game_loop(map, missions, player_amount):
                                 mission = missions[i]
                                 break
                         if mission.is_available() and players[player_index].lower_energy(mission.get_difficulty()):
-                            mission.lower_workload()
+                            mission.lower_workload(players[player_index].coding_level)
                             if not mission.is_available():
                                 players[player_index].add_bitcoins(mission.get_reward())
                                 print("You finished this mission.")
