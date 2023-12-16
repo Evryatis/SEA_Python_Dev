@@ -37,6 +37,39 @@ Le *game loop* a été implémenté avec une fonction qui prend plusieurs argume
 
 ### La version graphique (main_gui.py)
 
+La version graphique fonctionne uniquement avec un seul joueur. 
+
+Les status en haut à droite ne se mettent à jour que lorsque le joueur se déplace.
+
+En plus de Tkinter, PIL fut utilisé pour representer le joueur. Comme cela est une librairie que nous avons déjà utilisées dans l'iut je pense que cela ne causera aucun soucis..
+
+
 #### Comment y jouer ?
 
+Il est seulement possible d'y jouer avec les flèches directionnelles. Il suffit de se déplacer vers les cases violettes, qui representent les missions, cliquer "work", et travailler dessus.
+Cliquer "work" sur une mission dépense de l'énergie. Quand vous êtes a cours d'energie, il faut aller sur le carré vert, et cliquer "rest". Cela vous repose.
+
+
 #### Implémentation
+
+Le code source qui implémente le niveau 0 n'est pas utilisé dans cette version graphique. Il y a eu une sécession pendant la programmation, et nous avions du "branch" le code en deux parties distinctes. Cela  à été du a un malheureux problème de structure irrécupérable. Il aurait fallu mieux coordonner les deux codes, cela n'a pas été fait, erreur de débutant, car cela nous aurait bien simplifiées la tache (l'un s'occupait du graphique, l'autre du jeu de base)
+
+La partie graphique est divisée en deux parties primaire.
+
+gui_player, qui s'occupe principalement des fonctions contenant les donnés du joueurs, ainsi que main_gui, qui est la game_loop ainsi que le fichier créateur du canvas et du "grid", dans lequel le jeu se passe.
+
+La carte, restant toujours la même, (un grid de 20x20), les niveaux suivent une structure de donnée telle que :
+
+15 8 1 1
+
+15 et 8 sont les coordonnées. 1 symbolise que c'est une mission, et le 1 suivant symbolise sa difficulté. Cela n'est fait que pour les missions, ainsi les données marquées dans le fichier "map1.txt" s'afficheront en tant que missions sur la carte. Il faut cependant toujours avoir une donnée 10, 10, 2, 0, pour le game-center, sans-lequel le jeu ne marche pas du tout.
+
+Les fonctions de main_gui furent extrêmement compliquées à implementer, nottemment "move", car il fallait s'assurer que le joueur ne sorte pas de la carte. Je m'en sorti grâce a une variable destination. En revanche, check_mission, qui permet de vérifier si le joueur est bel et bien sur une mission, et lui faire travailler dessus, fut un enfers dont seul chatgpt put me sauver.
+
+Autrement, le jeu est sur un "grid" de tkinter, posé lui-même sur un "canvas", une sorte de widget très flexible de tkinter.
+
+Le __init__ de gui_player est donc un énorme mur de code, principalement pour afficher l'interface.
+
+
+
+
