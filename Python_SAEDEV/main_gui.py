@@ -1,131 +1,86 @@
-import tkinter as tk
 import os
-from ressources import ReadAndWrite as rw
+import tkinter as tk
+from ressources.gui_player import player_graphic as Player
+from PIL import Image, ImageTk
 
-
-
-GAME_MAP = []
+GAME_MAP = [] # Création de la carte principale, une liste de liste.
 for i in range(21):
     GAME_MAP.append([])
     for j in range(21):
         GAME_MAP[i].append(0)
 
-# def load_map_from_file(file_path, default_value=0):
-#     """
-#     Load map data from a text file and return a 2D list.
-#     Each element represents the type of cell at that position.
-#     """
-#     with open(file_path, 'r') as file:
-#         map_data = [list(map(int, line.strip().split())) for line in file]
-#
-#     # Find the maximum number of columns in any row
-#     max_columns = max(len(row) for row in map_data)
-#
-#     # Pad each row with the default value to make them equal in length
-#     map_data = [row + [default_value] * (max_columns - len(row)) for row in map_data]
-#
-#     return map_data
+def load_map_from_file(file_path):
+    map_data = []
 
+    with open(file_path, 'r') as file: # Ouvre le fichier en read
+        for line in file: # Itère chaque ligne du fichier
+            values = list(map(int, line.strip().split())) # code un peu fou qui prends les valeurs données dans le format de map1.txt, et les remets dans un format de liste listées
+            map_data.append(values)
 
+    return map_data
+file_path1 = ("./data/map1.txt")
+mission_list = load_map_from_file(file_path1)
 
-TASK_LOCATION = 1
-GAME_CENTER = 2
+def create_grid(canvas, cell_size, mission_list): # Création de la grid dans laquelle se passe le jeu
+    for row in range(21):
+        for col in range(21):
+            canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size, fill="white", outline="black")
+    for x, y, color_code, _ in mission_list:
+        fill_color = "purple" if color_code == 1 else "lightgreen" if color_code == 2 else "grey"
+        canvas.create_rectangle(x * cell_size, y * cell_size, (x + 1) * cell_size, (y + 1) * cell_size, fill=fill_color, outline="black")
 
-mission_list = rw.read_map_file("./data/map1.txt")
-game_map1 = [["white" for x in range(21)] for y in range(21)]
-for mission in mission_list:
-    game_map1[mission.coordinates[0]][mission.coordinates[1]] = "lightblue"
-
-def create_grid(canvas, cell_types, cell_size):
-    """
-    Draw the grid on the canvas based on cell types.
-    """
-    """row_count = len(cell_types)
-    col_count = len(cell_types[0])
-
-    for row in range(row_count):
-        for col in range(col_count):
-            cell_type = cell_types[row][col]
-
-            x = col * cell_size
-            y = row * cell_size
-
-            if row in mission_list[row] and col in mission_list[row]:
-                if 1 in mission_list[row]:
-                    fill_color = "lightblue"
-                if 2 in mission_list[row]:
-                    fill_color = "lightgreen"
-            # Set properties based on cell type
-            fill_color = "white"
-            if 0 <= row < len(mission_list) and 0 <= col < len(mission_list[row]):
-                if 1 in mission_list[row]:
-                    fill_color = "lightblue"
-                if 2 in mission_list[row]:
-                    fill_color = "lightgreen"
-
-            canvas.create_rectangle(x, y, x + cell_size, y + cell_size, fill=fill_color, outline="gray")"""
-    # for mission in mission_list:
-    #     x, y, color_code, _ = mission
-    # 
-    #     # Calculate the actual row and column indices based on x and y coordinates
-    #     row = y
-    #     col = x
-    # 
-    #     # Set fill_color based on color_code
-    #     if color_code == 1:
-    #         fill_color = "lightblue"
-    #     elif color_code == 2:
-    #         fill_color = "lightgreen"
-    #     else:
-    #         fill_color = "white"
-    # 
-    #     # Draw the cell
-    #     canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size, fill=fill_color, outline="gray")
-    
-    for y in range(len(cell_types)):
-        for x in range(len(cell_types)):
-            fill_color = cell_types[x][y]
-
-            canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size,
-                                    fill=fill_color, outline="gray")
-
-def mission_addon():
-    pass
-
-def main():
-    # GUI Initialization
+def main(): #Création du GUI principal
     main_gui = tk.Tk()
     main_gui.title("CSN_WAR")
-    main_gui.geometry('800x480')
-
-    # Title
+    main_gui.geometry('800x480') # Largeur de la fênetre à l'ouverture
     title_label = tk.Label(main_gui, text='CSN_WAR', font='Calibri 24 bold')
     title_label.grid(row=0, column=0, columnspan=2, pady=5)
-
-    # Grid Initialization for the widgets inside the window
     main_gui.columnconfigure(0, weight=1)
-
-    # Create a Canvas for the grid
-    grid_canvas = tk.Canvas(main_gui, width=20 * 20, height=20 * 20, bg="white")
+    grid_canvas = tk.Canvas(main_gui, width=60 * 20, height=40 * 20, bg="white")
     grid_canvas.grid(row=1, column=0, padx=20, pady=20)
+    stats_frame = tk.Frame(main_gui)
+    stats_frame.grid(row=2, column=0, pady=10)
 
-    # Get the absolute path to the map file
     map_file_path = os.path.join(os.getcwd(), 'data', 'map1.txt')
+    mission_list = load_map_from_file(map_file_path)
 
-    # Load map data from a file
-    map_data = GAME_MAP
+    create_grid(grid_canvas, 25, mission_list)
 
-    # Draw the grid with cell types
-    create_grid(grid_canvas, map_data, 20)
+    player = Player(canvas=grid_canvas, index=0)
 
-    # Placeholder for game-related functions (replace with actual functions)
-    # For example, you can call functions to handle player movements, tasks, etc.
+    def on_key_press(key): # Fonction pour le déplacement du joueur, elle vérifie a chaque fois si le joueur est sur une mission ou pas (nécessaire..)
+        if key.keysym == "Left":
+            if player.move(-1, 0):
+                check_mission()
+        elif key.keysym == "Right":
+            if player.move(1, 0):
+                check_mission()
+        elif key.keysym == "Up":
+            if player.move(0, -1):
+                check_mission()
+        elif key.keysym == "Down":
+            if player.move(0, 1):
+                check_mission()
 
-    # Game main loop
+    def check_mission(): # Fonction en rapport aux missions, au travail sur les missions, et sur les joueurs par-rapport à celles-ci
+        global mission_list # pour accèder à la liste de mission
+        for index, mission in enumerate(mission_list[:]):
+            x, y, color_code, travail = mission
+            if (player.coordinates[0], player.coordinates[1]) == (x, y):
+                player.work(1) # Player.work appelle une fonction qui enlève une energie au joueur
+                travail -= 1 # Réduit le travail restant dans la mission
+                mission_list[index] = (x, y, color_code, travail)
+                player.update_stats()
+                if travail == 0: # Si la mission n'a plus de travail à faire..
+                    player.add_bitcoins(100)
+                    mission_list.pop(index)
+                    player.update_stats()
+
+    main_gui.bind("<KeyPress>", on_key_press)
     main_gui.mainloop()
 
 if __name__ == "__main__":
     main()
-    
+
 
     
