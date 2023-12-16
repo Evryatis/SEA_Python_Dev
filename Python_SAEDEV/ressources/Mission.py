@@ -24,9 +24,9 @@ class Mission:
             return False
         return True
 
-    def lower_workload(self):
+    def lower_workload(self, coding):
         if self.remaining_workload > 0:
-            self.remaining_workload -= 1
+            self.remaining_workload -= coding
             return True
         return False
 
