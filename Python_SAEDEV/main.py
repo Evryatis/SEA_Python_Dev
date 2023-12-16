@@ -47,8 +47,6 @@ missions = rw.read_map_file("./data/map1.txt")
 def game_loop(map, missions, player_amount):
     # Creates as many players as needed with each one having their own index
     players = [Player(x) for x in range(player_amount)]
-    players[0].energy = 1000
-    players[0].bitcoins = 4999
 
     print("Input \"help\" for a list of available commands.\n")
     game_is_running = True
