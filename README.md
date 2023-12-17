@@ -5,6 +5,7 @@
 ### Les joueurs et les missions
 
 Les joueurs et les missions sont représentés par des classes qui leur correspondent.
+Pour le jeu en terminal, lancez main.py
 
 #### Les joueurs
 
@@ -45,6 +46,8 @@ En plus de Tkinter, PIL fut utilisé pour representer le joueur. Comme cela est 
 
 
 #### Comment y jouer ?
+
+Il suffit de lancer "main_gui.py".
 
 Il est seulement possible d'y jouer avec les flèches directionnelles. Il suffit de se déplacer vers les cases violettes, qui representent les missions, cliquer "work", et travailler dessus.
 Cliquer "work" sur une mission dépense de l'énergie. Quand vous êtes a cours d'energie, il faut aller sur le carré vert, et cliquer "rest". Cela vous repose.
