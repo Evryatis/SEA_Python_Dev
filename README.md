@@ -70,6 +70,8 @@ Autrement, le jeu est sur un "grid" de tkinter, posé lui-même sur un "canvas",
 
 Le __init__ de gui_player est donc un énorme mur de code, principalement pour afficher l'interface.
 
+Nous avons rencontrés de nombreuses difficultés, de nombreuses relectures communes ont due être faire, de l'entraide, et des recherches sur stackoverflow, youtube, etc. Notemment, l'ouverture de fichier, et la gestion des missions sur interface graphique fut compliquée, mais si la structure de code n'avait pas été scindée en deux, cela aurait été plus simple, et plus réussi.
 
+Nous sommes cependant satisfait du resultat.
 
 
