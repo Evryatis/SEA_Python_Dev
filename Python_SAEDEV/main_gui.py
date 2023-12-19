@@ -25,7 +25,7 @@ def create_grid(canvas, cell_size, mission_list): # Création de la grid dans la
     for row in range(21):
         for col in range(21):
             canvas.create_rectangle(col * cell_size, row * cell_size, (col + 1) * cell_size, (row + 1) * cell_size, fill="white", outline="black")
-    for x, y, color_code, _ in mission_list:
+    for x, y, color_code, difficulty in mission_list:
         fill_color = "purple" if color_code == 1 else "lightgreen" if color_code == 2 else "grey"
         canvas.create_rectangle(x * cell_size, y * cell_size, (x + 1) * cell_size, (y + 1) * cell_size, fill=fill_color, outline="black")
 
